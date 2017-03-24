@@ -362,6 +362,33 @@ class Database extends Chart
     }
 
     /**
+     * Group the data based on the latest weeks.
+     *
+     * @param int $number
+     * @param bool $fancy
+     * @return $this
+     */
+    public function lastByWeek($number = 52, $fancy = false)
+    {
+        $labels = [];
+        $values = [];
+
+        for ($i = 0; $i < $number; $i++) {
+            $date = $i == 0 ? date('d-m-Y') : date('d-m-Y', strtotime("-$i Week"));
+            $date_f = $fancy ? date($this->date_format, strtotime($date)) : $date;
+            array_push($labels, $date_f);
+            $value = $this->getCheckDateValue($date, 'd-m-Y', $date_f);
+            array_push($values, $value);
+        }
+
+        $this->labels(array_reverse($labels));
+        $this->values(array_reverse($values));
+
+        return $this;
+    }
+
+
+    /**
      * Group the data based on the latest months.
      *
      * @param int  $number
