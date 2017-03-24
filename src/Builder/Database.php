@@ -219,6 +219,38 @@ class Database extends Chart
         return $this;
     }
 
+    public function groupByWeek($year = null, $fancy = false)
+    {
+        $labels = [];
+        $values = [];
+
+        $year = $year ? $year : date('Y');
+
+        for ($i = 1; $i <= 52; $i++) {
+            if ($i < 10) {
+                $week = "0$i";
+            } else {
+                $week = "$i";
+            }
+
+            $date_get = $fancy ? $this->date_format : 'd-m-Y';
+            $label = date($date_get, strtotime("$year-$week"));
+
+            array_push($labels, $label);
+
+            $checkDate = "$year-$week";
+            $value = $this->getCheckDateValue($checkDate, 'Y-W', $label);
+
+            array_push($values, $value);
+        }
+
+        $this->labels($labels);
+        $this->values($values);
+
+
+        return $this;
+    }
+
     /**
      * Group the data monthly based on the creation date.
      *
