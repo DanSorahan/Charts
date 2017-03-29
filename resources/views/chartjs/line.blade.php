@@ -34,6 +34,10 @@
         options: {
             responsive: {{ $model->responsive || !$model->width ? 'true' : 'false' }},
             maintainAspectRatio: false,
+            tooltips: {
+                mode: 'index',
+                intersect: false
+            }
             @if($model->title)
                 title: {
                     display: true,
